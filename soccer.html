@@ -1,0 +1,66 @@
+<html>
+<body>
+<canvas height=400 width=400></canvas>	
+<script>
+
+var cx = document.querySelector("canvas").getContext("2d");
+
+function Vector(x,y) {
+	this.x = x;
+	this.y = y;
+}
+
+Vector.prototype.plus = function(other) {
+	return new Vector(this.x + other.x, this.y + other.y) 
+}
+Vector.prototype.times = function(other) {
+	return new Vector(this.x * other.x, this.y * other.y)
+}
+
+var lastTime = null;
+function frame(time) {
+	if (lastTime != null) 
+		updateAnimation(Math.min(100, time - lastTime) / 1000)
+	lastTime = time;
+	requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+var x = 100, y = 100
+var xSpeed = 60, ySpeed = 80;
+var radius = 15;
+
+
+function updateAnimation(step){
+	cx.clearRect(0,0,420,420);
+	cx.fillStyle = "green";
+	cx.lineWidth = 4;
+	cx.fillRect(10,10,410,410);
+	cx.strokeStyle = "white";
+	cx.strokeRect(110, 0, 200, 40);
+	cx.strokeRect(110, 370, 200, 40);
+	cx.strokeRect(0, 0, 500, 210);
+	cx.beginPath();
+	cx.arc(205, 205, 50, 0, 2*Math.PI);
+	cx.stroke();
+
+	x += xSpeed * step;
+	y += ySpeed * step;
+
+	if (x <= 10 + radius || x >= 400 - radius)
+		xSpeed = -xSpeed;
+	if (y <= 10 + radius || y >= 400 - radius)
+		ySpeed = -ySpeed;
+
+	cx.fillStyle = "white";
+	cx.beginPath();
+	cx.arc(x, y, radius, 0, 2*Math.PI);
+	cx.fill();
+}
+
+
+
+
+</script>
+</body>
+</html>
